@@ -1,25 +1,18 @@
-import logo from './logo.svg';
+import { useState } from 'react';
+import Sidebar from './components/sidebar/Sidebar';
+import sidebarData from './sidebarData';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [open, setOpen] = useState(false);
+	return (
+		<div className="App">
+			<Sidebar content={sidebarData} open={open} />
+			<section className="main">
+				<button onClick={() => setOpen((state) => !state)}>Toggle</button>
+			</section>
+		</div>
+	);
 }
 
 export default App;

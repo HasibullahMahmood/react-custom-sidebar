@@ -75,7 +75,7 @@
 	padding-left: 0px;
 	height: 0px;
 	overflow: hidden;
-    transition: height 0.3s ease 0s;
+	transition: height 0.3s ease 0s;
 	li {
 		a {
 			text-decoration: none;
@@ -97,4 +97,12 @@
 
 .expand {
 	height: auto;
+}
+
+.activeMenuItem * {
+	color: white !important;
+}
+
+.subMenuItemActive * {
+	color: white !important;
 }

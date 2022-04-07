@@ -8,11 +8,27 @@ const SidebarItem = ({ Icon, link, label, items }) => {
 	const subMenuRef = useRef(null);
 	const [showSubList, setShowSubList] = useState(false);
 	const [subMenuHeight, setSubMenuHeight] = useState(0);
+	const [isActive, setIsActive] = useState(false);
+	const [activeIndex, setActiveIndex] = useState(-1);
 
 	const menuItemClickHandler = (e) => {
 		e.preventDefault();
 		setShowSubList((prev) => !prev);
 	};
+
+	useEffect(() => {
+		const pathname = window.location.pathname;
+		if (link && link === pathname) {
+			setIsActive(true);
+		} else if (items && items.length > 0) {
+			const activeIndex = items.findIndex((i) => i.link === pathname);
+			if (activeIndex !== -1) {
+				setIsActive(true);
+				setShowSubList(true);
+				setActiveIndex(activeIndex);
+			}
+		}
+	}, [link, items]);
 
 	useEffect(() => {
 		const height = subMenuRef.current?.scrollHeight;
@@ -24,7 +40,11 @@ const SidebarItem = ({ Icon, link, label, items }) => {
 	const hasSubMenu = items && items.length > 0;
 	return (
 		<li className={styles.menuItem}>
-			<a href={link} onClick={hasSubMenu ? menuItemClickHandler : () => {}}>
+			<a
+				href={link}
+				onClick={hasSubMenu ? menuItemClickHandler : () => {}}
+				className={classNames({ [styles.activeMenuItem]: isActive })}
+			>
 				<div>
 					<span className={styles.icon}>
 						<Icon size={20} />
@@ -39,8 +59,14 @@ const SidebarItem = ({ Icon, link, label, items }) => {
 			</a>
 			{hasSubMenu && (
 				<ul className={styles.subMenu} ref={subMenuRef} style={{ height: showSubList ? subMenuHeight : 0 }}>
-					{items.map((item) => (
-						<li key={item.label} className={styles.subMenuItem}>
+					{items.map((item, idx) => (
+						<li
+							key={item.label}
+							className={classNames({
+								[styles.subMenuItem]: true,
+								[styles.subMenuItemActive]: idx === activeIndex,
+							})}
+						>
 							<a href={item.link}>{item.label}</a>
 						</li>
 					))}

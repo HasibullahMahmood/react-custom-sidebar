@@ -4,16 +4,15 @@ import classnames from 'classnames';
 import SidebarItem from './SidebarItem';
 import styles from './sidebar.module.scss';
 
-const Sidebar = ({ content, open }) => {
-	const [openMenuItemId, setOpenMenuItemId] = useState(null);
+const Sidebar = ({ content, open: openSidebar }) => {
+	const [openedL1ItemId, setOpenL1ItemId] = useState(null);
 
-	const sidebarItemClickHandler = useCallback((id) => {
-		console.log(id);
-		setOpenMenuItemId(id);
+	const level1ItemClickHandler = useCallback((id) => {
+		setOpenL1ItemId((prevId) => (prevId === id ? -1 : id));
 	}, []);
 
 	return (
-		<section className={classnames({ [styles.sidebar]: true, [styles.open]: open })}>
+		<section className={classnames({ [styles.sidebar]: true, [styles.openSidebar]: openSidebar })}>
 			<header>Vihobook</header>
 			<nav className={styles.nav}>
 				<div className={styles.menuTitle}>Menu</div>
@@ -26,8 +25,8 @@ const Sidebar = ({ content, open }) => {
 							link={item.link}
 							label={item.label}
 							items={item.items}
-							sidebarItemClickHandler={sidebarItemClickHandler}
-							openSubMenu={item.id === openMenuItemId}
+							level1ItemClickHandler={level1ItemClickHandler}
+							openLevel2={item.id === openedL1ItemId}
 						/>
 					))}
 				</ul>

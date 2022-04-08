@@ -4,16 +4,16 @@ import classNames from 'classnames';
 
 import styles from './sidebar.module.scss';
 
-const SidebarItem = ({ Icon, link, label, items }) => {
+const SidebarItem = ({ id, Icon, link, label, items, sidebarItemClickHandler, openSubMenu }) => {
 	const subMenuRef = useRef(null);
-	const [showSubList, setShowSubList] = useState(false);
+
 	const [subMenuHeight, setSubMenuHeight] = useState(0);
 	const [isActive, setIsActive] = useState(false);
 	const [activeIndex, setActiveIndex] = useState(-1);
 
 	const menuItemClickHandler = (e) => {
 		e.preventDefault();
-		setShowSubList((prev) => !prev);
+		sidebarItemClickHandler(id);
 	};
 
 	useEffect(() => {
@@ -24,11 +24,11 @@ const SidebarItem = ({ Icon, link, label, items }) => {
 			const activeIndex = items.findIndex((i) => i.link === pathname);
 			if (activeIndex !== -1) {
 				setIsActive(true);
-				setShowSubList(true);
+				sidebarItemClickHandler(id);
 				setActiveIndex(activeIndex);
 			}
 		}
-	}, [link, items]);
+	}, [link, items, id, sidebarItemClickHandler]);
 
 	useEffect(() => {
 		const height = subMenuRef.current?.scrollHeight;
@@ -52,13 +52,13 @@ const SidebarItem = ({ Icon, link, label, items }) => {
 					<label>{label}</label>
 				</div>
 				{hasSubMenu && (
-					<span className={classNames({ [styles.arrow]: true, [styles.rotateArrow]: showSubList })}>
+					<span className={classNames({ [styles.arrow]: true, [styles.rotateArrow]: openSubMenu })}>
 						<IoIosArrowForward />
 					</span>
 				)}
 			</a>
 			{hasSubMenu && (
-				<ul className={styles.subMenu} ref={subMenuRef} style={{ height: showSubList ? subMenuHeight : 0 }}>
+				<ul className={styles.subMenu} ref={subMenuRef} style={{ height: openSubMenu ? subMenuHeight : 0 }}>
 					{items.map((item, idx) => (
 						<li
 							key={item.label}

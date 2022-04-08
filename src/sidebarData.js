@@ -3,11 +3,13 @@ import { FiSettings } from 'react-icons/fi';
 
 const data = [
 	{
+		id: 1,
 		label: 'Home Page',
 		link: '/',
 		icon: BiHome,
 	},
 	{
+		id: 2,
 		label: 'Setup',
 		icon: FiSettings,
 		link: null,
@@ -31,6 +33,7 @@ const data = [
 		],
 	},
 	{
+		id: 3,
 		label: 'Messages',
 		icon: BiMessage,
 		link: null,
